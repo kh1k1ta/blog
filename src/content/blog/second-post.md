@@ -1,16 +1,32 @@
 ---
-title: 'Second post'
-description: 'Lorem ipsum dolor sit amet'
+title: 'TESLA GPUでクラウドゲームしたりローカルAIしたり'
+description: '君もサーバー用パーツで幸せになろう'
 pubDate: 'Jul 15 2022'
 heroImage: '../../assets/blog-placeholder-4.jpg'
 ---
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vitae ultricies leo integer malesuada nunc vel risus commodo viverra. Adipiscing enim eu turpis egestas pretium. Euismod elementum nisi quis eleifend quam adipiscing. In hac habitasse platea dictumst vestibulum. Sagittis purus sit amet volutpat. Netus et malesuada fames ac turpis egestas. Eget magna fermentum iaculis eu non diam phasellus vestibulum lorem. Varius sit amet mattis vulputate enim. Habitasse platea dictumst quisque sagittis. Integer quis auctor elit sed vulputate mi. Dictumst quisque sagittis purus sit amet.
+先に断っておくと，この記事は”我が家が逸般の誤家庭になってもいい!”という方のために存在している．また，筆者の身の上話がだらだら続いたりするので適宜読み飛ばすこと．
 
-Morbi tristique senectus et netus. Id semper risus in hendrerit gravida rutrum quisque non tellus. Habitasse platea dictumst quisque sagittis purus sit amet. Tellus molestie nunc non blandit massa. Cursus vitae congue mauris rhoncus. Accumsan tortor posuere ac ut. Fringilla urna porttitor rhoncus dolor. Elit ullamcorper dignissim cras tincidunt lobortis. In cursus turpis massa tincidunt dui ut ornare lectus. Integer feugiat scelerisque varius morbi enim nunc. Bibendum neque egestas congue quisque egestas diam. Cras ornare arcu dui vivamus arcu felis bibendum. Dignissim suspendisse in est ante in nibh mauris. Sed tempus urna et pharetra pharetra massa massa ultricies mi.
+# TESLAはいい... けど，いろいろ問題児
+最近，TESLA M60を買った．こいつは2GPU構成になっていて，ワンボードに2つの独立したGPUとVRAM8GBがそれぞれついているような構成になっている．つまり，片方はゲーミングVMに，もう片方は画像生成VMにパススルーする... と言った柔軟な構成に対応できるのだ! しかし初心者がこれを買うとかなりハマる．2敗．個人的にハマったポイントをまとめておくので，後任者に役立たれたい次第だ．
 
-Mollis nunc sed id semper risus in. Convallis a cras semper auctor neque. Diam sit amet nisl suscipit. Lacus viverra vitae congue eu consequat ac felis donec. Egestas integer eget aliquet nibh praesent tristique magna sit amet. Eget magna fermentum iaculis eu non diam. In vitae turpis massa sed elementum. Tristique et egestas quis ipsum suspendisse ultrices. Eget lorem dolor sed viverra ipsum. Vel turpis nunc eget lorem dolor sed viverra. Posuere ac ut consequat semper viverra nam. Laoreet suspendisse interdum consectetur libero id faucibus. Diam phasellus vestibulum lorem sed risus ultricies tristique. Rhoncus dolor purus non enim praesent elementum facilisis. Ultrices tincidunt arcu non sodales neque. Tempus egestas sed sed risus pretium quam vulputate. Viverra suspendisse potenti nullam ac tortor vitae purus faucibus ornare. Fringilla urna porttitor rhoncus dolor purus non. Amet dictum sit amet justo donec enim.
+# なぜTESLAを買うか
+## 普通のGeforceと何が違うの?
+TESLAはデータセンタ向けGPUであり，ゲーミング用として販売されているGeforceシリーズや，研究・ワークステーションなど用のQuadro RTXシリーズとは（色んな意味で）一線を画している．主要な違いを列挙しよう;
+- 映像出力がない（か，少ない）．
+- 初期状態ではDirect Computeが無効化されており，ゲームなどをプレイすることができない．解決法は後述．
+- 補助電源にPCIe 8pinではなく，EPS 8pinを要求することがある．要注意!
+- 基本的にパッシブ冷却で，本体と別でファンが必要である（3Dプリンタなどを用いてファンの風を窄めるアタッチメントを自作するとよい）．
+- FP32性能が制限されていない．
+- 仮想マシンでの利用が意識されている．
+- **VRAM容量が同世代のGeforceより多く，また中古でのコスパが高い．**
+## 命名規則
+モデル名による性能の見方などをおおよそまとめておこう．なお，`https://ja.wikipedia.org/wiki/NVIDIA_Tesla`も参考になる．よく確認されたい．
+基本的に，命名は次の形式に従っている; `NVIDIA TESLA [世代][グレード]`．[世代]に関しては"K", "M", "P"のように各アーキテクチャの頭文字が用いられる．
+グレードは（だいたい）10 20 40 60 80... と上がり，高いほど性能が高く，VRAMも増える．
+VRAM容量がいくら大きいからと言っても，Kepler世代のGPUなどを購入すると後悔する可能性が高い．Kepler世代はドライバサポートも打ち切られており，全体的に扱いが難しく上級者向けだ．おすすめはMaxwell世代，Pascal世代．まだギリギリドライバサポートされていて，ローカルAIユースにも堪える性能がある．
+## VRAM
 
-Mattis ullamcorper velit sed ullamcorper morbi tincidunt. Tortor posuere ac ut consequat semper viverra. Tellus mauris a diam maecenas sed enim ut sem viverra. Venenatis urna cursus eget nunc scelerisque viverra mauris in. Arcu ac tortor dignissim convallis aenean et tortor at. Curabitur gravida arcu ac tortor dignissim convallis aenean et tortor. Egestas tellus rutrum tellus pellentesque eu. Fusce ut placerat orci nulla pellentesque dignissim enim sit amet. Ut enim blandit volutpat maecenas volutpat blandit aliquam etiam. Id donec ultrices tincidunt arcu. Id cursus metus aliquam eleifend mi.
 
-Tempus quam pellentesque nec nam aliquam sem. Risus at ultrices mi tempus imperdiet. Id porta nibh venenatis cras sed felis eget velit. Ipsum a arcu cursus vitae. Facilisis magna etiam tempor orci eu lobortis elementum. Tincidunt dui ut ornare lectus sit. Quisque non tellus orci ac. Blandit libero volutpat sed cras. Nec tincidunt praesent semper feugiat nibh sed pulvinar proin gravida. Egestas integer eget aliquet nibh praesent tristique magna.
+# 購入
+メルカリやeBayなどを漁っていると，リース落ちと思われるTESLAがたくさん出てくる．
